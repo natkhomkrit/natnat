@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เพลง Anniversary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="song-container">
+        <h1>Happy Anniversary นะคะ<img src="\img\hart.png" width="50px" height="100%"></h1>
+        <audio id="audioPlayer" controls>
+            <source src="\music\die whit a smile - Made with Clipchamp (online-audio-converter.com).mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <div class="lyrics">
+            <p align="center"><img src="\img\cat-133.gif" width="100px" height="100px"></p>
+            <p id="lyricsDisplay" align="center"></p>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById("audioPlayer");
+        const lyricsDisplay = document.getElementById("lyricsDisplay");
+
+        // Timestamps และเนื้อเพลง
+        const lyrics = [
+            { time: 0, text1: "", text2: "" },
+            { time: 1, text1: "Wherever you go, that’s where I’ll follow", text2: "ไม่ว่าคุณจะไปที่ไหน ฉันจะตามไปด้วยจะอยู่กับคุณตลอด" },
+            { time: 3, text1: "Nobody’s promised tomorrow", text2: "อนาคตเป็นสิ่งที่คาดเดาไม่ได้" },
+            { time: 8, text1: "So I’ma love you every night like it’s the last night", text2: "ฉันก็จะรักคุณทุกช่วงเวลา ราวกับว่าจะจบลงเมื่อไรก็ได้" },
+            { time: 12, text1: "Like it’s the last night", text2: "เหมือนเป็นคืนสุดท้าย" },
+            { time: 14, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 16, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 23, text1: "If the party was over", text2: "หากงานเลี้ยงได้เลิกราไป ดั่งชีวิตที่สิ้นสุดลง" },
+            { time: 26, text1: "And our time on Earth was through", text2: "และเวลาของเราบนโลกนี้ที่กำลังจะถึงจุดจบ" },
+            { time: 32, text1: "I’d wanna hold you just for a while", text2: "ฉันอยากจะโอบกอดคุณไว้สักพัก" },
+            { time: 37, text1: "And die with a smile", text2: "และตายไปพร้อมกับรอยยิ้มแห่งความพึงพอใจ" },
+            { time: 41, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 44, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 55, text1: "(Ooh, ooh)", text2: "(โอ้)" },
+            { time: 58, text1: "Ooh, lost, lost in the words that we scream", text2: "โอ้ รู้สึกสับสนจากการขัดแย้งที่รุนแรงเสียเหลือเกิน" },
+            { time: 62, text1: "I don’t even wanna do this anymore", text2: "ฉันเบื่อหน่ายกับความตึงเครียดจนไม่อยากทำแบบนี้อีกแล้ว" },
+            { time: 67, text1: "Cause you already know what you mean to me", text2: "เพราะคุณรู้ดีอยู่แล้วว่าคุณมีความหมายกับฉันมากเพียงใด" },
+            { time: 70, text1: "And our love’s the only one worth fighting for", text2: "และความรักของเราคือสิ่งเดียวที่ควรค่าแก่การต่อสู้เพื่อให้ได้มา" },
+            { time: 76, text1: "Wherever you go, that’s where I’ll follow", text2: "ไม่ว่าคุณจะไปที่ไหน ฉันจะตามไปด้วยจะอยู่กับคุณตลอด" },
+            { time: 80, text1: "Nobody’s promised tomorrow", text2: "อนาคตเป็นสิ่งที่คาดเดาไม่ได้" },
+            { time: 85, text1: "So I’ma love you every night like it’s the last night", text2: "ฉันก็จะรักคุณทุกช่วงเวลาราวกับว่าจะจบลงเมื่อไรก็ได้" },
+            { time: 90, text1: "Like it’s the last night", text2: "เหมือนเป็นคืนสุดท้าย" },
+            { time: 91, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 94, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 100, text1: "If the party was over", text2: "หากงานเลี้ยงได้เลิกราไป ดั่งชีวิตที่สิ้นสุดลง" },
+            { time: 103, text1: "And our time on Earth was through", text2: "และเวลาของเราบนโลกนี้ที่กำลังจะถึงจุดจบ" },
+            { time: 110, text1: "I’d wanna hold you just for a while", text2: "ฉันอยากจะโอบกอดคุณไว้สักพัก" },
+            { time: 114, text1: "And die with a smile", text2: "และตายไปพร้อมกับรอยยิ้มแห่งความพึงพอใจ" },
+            { time: 119, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 121, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 128, text1: "Right next to you", text2: "อยู่เคียงข้างคุณ" },
+            { time: 132, text1: "Next to you", text2: "อยู่เคียงข้างคุณ" },
+            { time: 137, text1: "Right next to you", text2: "อยู่เคียงข้างคุณ" },
+            { time: 140, text1: "Oh-oh", text2: "โอ้" },
+            { time: 160, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 163, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 169, text1: "If the party was over", text2: "หากงานเลี้ยงได้เลิกราไป ดั่งชีวิตที่สิ้นสุดลง" },
+            { time: 172, text1: "And our time on Earth was through", text2: "และเวลาของเราบนโลกนี้ที่กำลังจะถึงจุดจบ" },
+            { time: 178, text1: "I’d wanna hold you just for a while", text2: "ฉันอยากจะโอบกอดคุณไว้สักพัก" },
+            { time: 183, text1: "And die with a smile", text2: "และตายไปพร้อมกับรอยยิ้มแห่งความพึงพอใจ" },
+            { time: 187, text1: "If the world was ending", text2: "หากโลกเดินมาถึงจุดจบ" },
+            { time: 190, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            { time: 193, text1: "(Ooh, ooh)", text2: "(โอ้)" },
+            { time: 195, text1: "I’d wanna be next to you", text2: "ฉันอยากอยู่เคียงข้างคุณ" },
+            
+        ];
+
+        // ฟังก์ชั่นในการตรวจจับเวลาเพลง
+        audioPlayer.ontimeupdate = function() {
+            let currentTime = audioPlayer.currentTime;
+            
+            // ตรวจสอบว่าควรแสดงข้อความใด
+            for (let i = 0; i < lyrics.length; i++) {
+                if (currentTime >= lyrics[i].time && (i === lyrics.length - 1 || currentTime < lyrics[i + 1].time)) {
+                    lyricsDisplay.innerHTML = `<span>${lyrics[i].text1}</span><br><span>${lyrics[i].text2}</span>`;
+                    break;
+                }
+            }
+        };
+    </script>
+</body>
+</html>
